@@ -1,10 +1,10 @@
-import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { IAppConfig } from './config/app.config';
+import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from './config/swagger.config';
+import { ConfigService } from '@nestjs/config';
+import { IAppConfig } from './config/app.config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -47,7 +47,7 @@ async function bootstrap() {
 
   // Start server
   const port = appConfig?.port || 3000;
-  await app.listen(port, '0.0.0.0');
+  await app.listen(port);
 
   console.log(`🚀 Super Fitness API is running on: ${await app.getUrl()}`);
   console.log(`📝 API Documentation: ${await app.getUrl()}/api-docs`);
