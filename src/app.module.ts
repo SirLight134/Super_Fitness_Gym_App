@@ -11,6 +11,8 @@ import { getEnvName } from './config/utils/get-env-name';
 import { validate } from './config/utils/validate-config';
 import { CommonEnvValidation } from './config/validation/common.env.validation';
 import { DatabaseModule } from './database/database.module';
+import { OnboardingModule } from './modules/onboarding/onboarding.module';
+import { S3Service } from './s3/s3.service';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { DatabaseModule } from './database/database.module';
       validate: validate(CommonEnvValidation),
       cache: true,
     }),
+    OnboardingModule,
   ],
   controllers: [AppController],
   providers: [
@@ -32,6 +35,8 @@ import { DatabaseModule } from './database/database.module';
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,
     },
+
+    S3Service,
   ],
 })
 export class AppModule implements OnModuleInit {
