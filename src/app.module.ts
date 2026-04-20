@@ -8,12 +8,15 @@ import appConfig from './config/app.config';
 import { getEnvName } from './config/utils/get-env-name';
 import { validate } from './config/utils/validate-config';
 import { CommonEnvValidation } from './config/validation/common.env.validation';
+import { DatabaseModule } from './database/database.module';
+import databaseConfig from './config/database.config';
 
 @Module({
   imports: [
+    DatabaseModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig],
+      load: [appConfig, databaseConfig],
       envFilePath: getEnvName(),
       validate: validate(CommonEnvValidation),
       cache: true,
