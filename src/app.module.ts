@@ -10,6 +10,7 @@ import { validate } from './config/utils/validate-config';
 import { CommonEnvValidation } from './config/validation/common.env.validation';
 import { DatabaseModule } from './database/database.module';
 import databaseConfig from './config/database.config';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import databaseConfig from './config/database.config';
       validate: validate(CommonEnvValidation),
       cache: true,
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
