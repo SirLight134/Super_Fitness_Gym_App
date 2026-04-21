@@ -1,5 +1,5 @@
-import { join } from 'node:path';
 import { config } from 'dotenv';
+import { join } from 'node:path';
 
 // Load environment variables for CLI usage
 const ENV = process.env.NODE_ENV;
@@ -27,7 +27,7 @@ export default new DataSource({
   username: dbConfig.username,
   password: dbConfig.password,
   database: dbConfig.database,
-  synchronize: false,
+  synchronize: dbConfig.synchronize,
   logging: dbConfig.logging,
   entities: [
     join(__dirname, '../modules/**/entities/*.entity{.ts,.js}'),

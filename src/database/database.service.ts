@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { CustomTypeORMLogger } from './typeorm.logger';
+import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { IDatabaseConfig } from 'src/config/database.config';
+import { CustomTypeORMLogger } from './typeorm.logger';
 
 @Injectable()
 export class DatabaseService implements TypeOrmOptionsFactory {
@@ -24,7 +24,7 @@ export class DatabaseService implements TypeOrmOptionsFactory {
       username: dbConfig?.username,
       password: dbConfig?.password,
       database: dbConfig?.database,
-      synchronize: false,
+      synchronize: dbConfig?.synchronize,
       logger: new CustomTypeORMLogger(),
       autoLoadEntities: true,
       migrationsRun: dbConfig?.isProduction,
