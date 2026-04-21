@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { S3Service } from 'src/s3/s3.service';
 import { Repository } from 'typeorm';
-import { S3Service } from '../../s3/s3.service';
 import { CreateOnboardingDto } from './dto/create-onboarding.dto';
 import { UpdateOnboardingDto } from './dto/update-onboarding.dto';
 import { Onboarding } from './entities/onboarding.entity';

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { S3Service } from '../../s3/s3.service';
+import { S3Service } from 'src/s3/s3.service';
 import { Onboarding } from './entities/onboarding.entity';
 import { OnboardingService } from './onboarding.service';
 
