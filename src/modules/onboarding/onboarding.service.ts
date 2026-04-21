@@ -19,13 +19,7 @@ export class OnboardingService {
 
     const imageUrl = await this.s3Service.uploadFile(file);
 
-    const data = { ...dto } as Record<string, unknown>;
-    delete data.image;
-
-    const screen = this.repo.create({
-      ...(data as any),
-      image: imageUrl,
-    });
+    const screen = this.repo.create({ ...dto, image: imageUrl });
 
     return await this.repo.save(screen);
   }
@@ -47,24 +41,13 @@ export class OnboardingService {
   ) {
     const screen = await this.findOne(id);
 
+    Object.assign(screen, dto);
+
     if (file) {
       screen.image = await this.s3Service.uploadFile(file);
     }
 
-    const data = { ...dto } as Record<string, unknown>;
-    delete data.image;
-
-    const screenAsRecord = screen as unknown as Record<string, unknown>;
-
-    Object.keys(data).forEach((key) => {
-      const value = data[key];
-      if (value !== undefined && value !== '') {
-        screenAsRecord[key] = value;
-      }
-    });
-
-    await this.repo.save(screen);
-    return this.findOne(id);
+    return await this.repo.save(screen);
   }
 
   async remove(id: number) {
