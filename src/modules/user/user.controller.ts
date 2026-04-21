@@ -20,13 +20,14 @@ import {
 } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, UserResponseDto } from './dto/user.dto';
+import { Public } from '../Auth/decorators/public.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth('JWT-auth')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
+  @Public()
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({
@@ -38,7 +39,7 @@ export class UserController {
   async create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
-
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all users with pagination' })
   @ApiQuery({ name: 'page', required: false, type: Number })
@@ -59,7 +60,7 @@ export class UserController {
       isActive: isActive !== undefined ? Boolean(isActive) : undefined,
     });
   }
-
+  @Public()
   @Get('stats')
   @ApiOperation({ summary: 'Get user statistics' })
   @ApiResponse({
@@ -69,7 +70,7 @@ export class UserController {
   async getStats() {
     return this.userService.getStats();
   }
-
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get a user by ID' })
   @ApiResponse({

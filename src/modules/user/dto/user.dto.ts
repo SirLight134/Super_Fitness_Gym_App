@@ -88,7 +88,7 @@ export class UserResponseDto {
   email!: string;
 
   @ApiProperty()
-  gender!: 'male' | 'female';
+  gender!: Gender;
 
   @ApiPropertyOptional()
   phoneNumber?: string;
