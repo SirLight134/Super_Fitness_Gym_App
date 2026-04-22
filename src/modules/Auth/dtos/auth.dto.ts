@@ -57,7 +57,24 @@ export class RegisterDto {
 export class AuthResponseDto {
   @ApiProperty()
   accessToken!: string;
-
   @ApiProperty()
   user!: UserResponseDto;
+}
+
+export class LoginDto {
+  @ApiProperty({ example: 'ahmed@domain.com' })
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty({ example: 'StrongPassword123!' })
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(6)
+  password: string;
+}
+
+export class loginResponseDto {
+  @ApiProperty()
+  accessToken!: string;
 }

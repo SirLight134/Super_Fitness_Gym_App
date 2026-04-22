@@ -1,4 +1,11 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -6,7 +13,12 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { RegisterDto, AuthResponseDto } from './dtos/auth.dto';
+import {
+  RegisterDto,
+  AuthResponseDto,
+  LoginDto,
+  loginResponseDto,
+} from './dtos/auth.dto';
 import {
   type AuthenticatedUser,
   CurrentUser,
@@ -30,6 +42,22 @@ export class AuthController {
   @ApiResponse({ status: 409, description: 'Username already exists' })
   async register(@Body() registerDto: RegisterDto): Promise<AuthResponseDto> {
     return this.authService.register(registerDto);
+  }
+
+  // login
+
+  @Public()
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({
+    status: 200,
+    description: 'User logged in successfully',
+    type: loginResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  async login(@Body() loginDto: LoginDto): Promise<loginResponseDto> {
+    return this.authService.login(loginDto);
   }
 
   @Get('profile')

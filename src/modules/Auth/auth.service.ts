@@ -1,8 +1,17 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from '../user/repositories/user.repository';
-import { RegisterDto, AuthResponseDto } from './dtos/auth.dto';
+import {
+  RegisterDto,
+  AuthResponseDto,
+  LoginDto,
+  loginResponseDto,
+} from './dtos/auth.dto';
 import { JwtPayload } from './strategies/jwt.strategy';
 
 @Injectable()
@@ -74,6 +83,34 @@ export class AuthService {
   private async hashPassword(password: string): Promise<string> {
     const saltRounds = 10;
     return bcrypt.hash(password, saltRounds);
+  }
+  private async comparePasswords(
+    plainPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
+    return bcrypt.compare(plainPassword, hashedPassword);
+  }
+
+  // login =================================
+
+  async login(loginDto: LoginDto): Promise<loginResponseDto> {
+    const { email, password } = loginDto;
+
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      throw new UnauthorizedException('Invalid email or password');
+    }
+
+    const isMatch = await this.comparePasswords(password, user.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('Invalid email or password');
+    }
+
+    const accessToken = this.generateToken(user.id, user.email);
+
+    return {
+      accessToken,
+    };
   }
 
   // private async comparePasswords(
