@@ -1,29 +1,31 @@
 import {
-  Controller,
-  Post,
   Body,
+  Controller,
   Get,
   HttpCode,
   HttpStatus,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import {
-  ApiTags,
+  ApiBearerAuth,
   ApiOperation,
   ApiResponse,
-  ApiBearerAuth,
+  ApiTags,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import {
-  RegisterDto,
-  AuthResponseDto,
-  LoginDto,
-  loginResponseDto,
-} from './dtos/auth.dto';
 import {
   type AuthenticatedUser,
   CurrentUser,
 } from './decorators/current-user.decorator';
 import { Public } from './decorators/public.decorator';
+import {
+  AuthResponseDto,
+  LoginDto,
+  loginResponseDto,
+  RegisterDto,
+} from './dtos/auth.dto';
+import { CompleteRegisterDto } from './dtos/complete-register.dto';
 
 @ApiTags('Authentication')
 @ApiBearerAuth('JWT-auth')
@@ -66,5 +68,15 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   getProfile(@CurrentUser() user: AuthenticatedUser) {
     return user;
+  }
+
+  @Patch('complete-profile')
+  @ApiOperation({ summary: 'Update user profile steps (Onboarding)' })
+  @ApiResponse({ status: 200, description: 'Profile updated successfully' })
+  async completeProfile(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: CompleteRegisterDto,
+  ) {
+    return this.authService.completeProfile(user.id, dto);
   }
 }

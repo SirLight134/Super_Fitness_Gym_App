@@ -1,12 +1,12 @@
+import { ActivityLevel, Gender, Goal } from 'src/common/enums/user.enum';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   Index,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { ActivityLevel, Gender, Goal } from 'src/common/enums/user.enum';
 
 @Entity('users')
 export class User {
@@ -38,6 +38,9 @@ export class User {
 
   @Column({ nullable: true, type: 'int' })
   height?: number;
+
+  @Column({ type: 'int', nullable: true })
+  age?: number;
 
   @Column({ type: 'enum', enum: Goal, nullable: true })
   goal?: Goal;
