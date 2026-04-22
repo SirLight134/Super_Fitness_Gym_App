@@ -73,6 +73,7 @@ cp .env.example .env
 Edit the .env file and update the following variables:
 
 env
+```text
 # App
 APP_NAME=super-fitness-api
 NODE_ENV=development
@@ -98,6 +99,7 @@ API_VERSION=v1
 
 # Cors
 CORS_ORIGIN=*  # change this in production
+```
 
 ## 🗄 Database Setup
  Setup Using Docker (Recommended)
