@@ -1,12 +1,13 @@
-import { ActivityLevel, Gender, Goal } from 'src/common/enums/user.enum';
 import {
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
+import { ActivityLevel, Gender, Goal } from 'src/common/enums/user.enum';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User {
@@ -24,6 +25,7 @@ export class User {
   lastName!: string;
 
   @Column({ select: false }) // Don't include password in default queries
+  @Exclude()
   password!: string;
 
   @Column({ type: 'enum', enum: Gender })
@@ -38,9 +40,6 @@ export class User {
 
   @Column({ nullable: true, type: 'int' })
   height?: number;
-
-  @Column({ type: 'int', nullable: true })
-  age?: number;
 
   @Column({ type: 'enum', enum: Goal, nullable: true })
   goal?: Goal;

@@ -1,35 +1,34 @@
 import {
-  Body,
   Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Patch,
   Post,
+  Body,
+  Get,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import {
-  ApiBearerAuth,
+  ApiTags,
   ApiOperation,
   ApiResponse,
-  ApiTags,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import { RegisterDto, AuthResponseDto } from './dtos/auth.dto';
 import {
   type AuthenticatedUser,
   CurrentUser,
 } from './decorators/current-user.decorator';
 import { Public } from './decorators/public.decorator';
 import {
-  AuthResponseDto,
-  LoginDto,
-  loginResponseDto,
-  RegisterDto,
-} from './dtos/auth.dto';
-import { CompleteRegisterDto } from './dtos/complete-register.dto';
+  ForgotPasswordDto,
+  ResetPasswordDto,
+  VerifyOtpDto,
+} from './dtos/forget-password.dto';
 
 @ApiTags('Authentication')
 @ApiBearerAuth('JWT-auth')
 @Controller('auth')
+@UseInterceptors(ClassSerializerInterceptor) // exclude password from response
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -46,22 +45,6 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
-  // login
-
-  @Public()
-  @Post('login')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Login user' })
-  @ApiResponse({
-    status: 200,
-    description: 'User logged in successfully',
-    type: loginResponseDto,
-  })
-  @ApiResponse({ status: 401, description: 'Invalid credentials' })
-  async login(@Body() loginDto: LoginDto): Promise<loginResponseDto> {
-    return this.authService.login(loginDto);
-  }
-
   @Get('profile')
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiResponse({ status: 200, description: 'User profile retrieved' })
@@ -70,13 +53,21 @@ export class AuthController {
     return user;
   }
 
-  @Patch('complete-profile')
-  @ApiOperation({ summary: 'Update user profile steps (Onboarding)' })
-  @ApiResponse({ status: 200, description: 'Profile updated successfully' })
-  async completeProfile(
-    @CurrentUser() user: AuthenticatedUser,
-    @Body() dto: CompleteRegisterDto,
-  ) {
-    return this.authService.completeProfile(user.id, dto);
+  @Public()
+  @Post('forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(forgotPasswordDto);
+  }
+
+  @Public()
+  @Post('verify-otp')
+  async verifyOtp(@Body() verifyOtpDto: VerifyOtpDto) {
+    return this.authService.verifyOtp(verifyOtpDto);
+  }
+
+  @Public()
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.authService.resetPassword(resetPasswordDto);
   }
 }

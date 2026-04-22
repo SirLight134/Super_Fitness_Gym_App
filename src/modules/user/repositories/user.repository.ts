@@ -48,6 +48,13 @@ export class UserRepository {
   }
 
   /**
+   * Find a user by ID
+   */
+  async findByEmail(email: string): Promise<User | null> {
+    return this.repository.findOne({ where: { email } });
+  }
+
+  /**
    * Update a user
    */
   async update(id: string, userData: Partial<User>): Promise<User | null> {
@@ -69,13 +76,6 @@ export class UserRepository {
   async delete(id: string): Promise<boolean> {
     const result = await this.repository.delete(id);
     return (result.affected ?? 0) > 0;
-  }
-  // find by email
-  async findByEmail(email: string): Promise<User | null> {
-    return this.repository.findOne({
-      where: { email, isActive: true },
-      select: ['id', 'email', 'password'],
-    });
   }
 
   /**

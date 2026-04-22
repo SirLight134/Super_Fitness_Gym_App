@@ -1,5 +1,3 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEnum,
@@ -10,6 +8,8 @@ import {
   Max,
   MinLength,
 } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/mapped-types';
 import { Match } from 'src/common/decorators/match.decorator';
 import { ActivityLevel, Gender, Goal } from 'src/common/enums/user.enum';
 
@@ -92,9 +92,6 @@ export class UserResponseDto {
 
   @ApiPropertyOptional()
   phoneNumber?: string;
-
-  @ApiPropertyOptional()
-  age?: number;
 
   @ApiPropertyOptional()
   weight?: number;
