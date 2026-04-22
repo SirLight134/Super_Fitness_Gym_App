@@ -175,12 +175,12 @@ Once the application is running, you can access the Swagger documentation:
   }
   ```
 - Current Decorator:-
- * @Current()
+ * @CurrentUser()
  * Extracts the authenticated user from the request
  * 
       ### Usage:-
  ```typescript
-   @Get('profile')
+  @Get('profile')
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiResponse({ status: 200, description: 'User profile retrieved' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -239,7 +239,7 @@ Create an issue
 
 Contact the development team
 
-## 🚀 Quick Start (TL;DR)
+## 🚀 Quick Start
 ```bash
 # 1. Clone and install
 git clone https://github.com/elevate-backend-c2/super-fitness-api-team-c.git
