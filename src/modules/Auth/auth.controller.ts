@@ -1,4 +1,11 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -16,6 +23,7 @@ import { Public } from './decorators/public.decorator';
 @ApiTags('Authentication')
 @ApiBearerAuth('JWT-auth')
 @Controller('auth')
+@UseInterceptors(ClassSerializerInterceptor) // exclude password from response
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

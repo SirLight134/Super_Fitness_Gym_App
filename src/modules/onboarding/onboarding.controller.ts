@@ -15,6 +15,7 @@ import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateOnboardingDto } from './dto/create-onboarding.dto';
 import { UpdateOnboardingDto } from './dto/update-onboarding.dto';
 import { OnboardingService } from './onboarding.service';
+import { Public } from '../Auth/decorators/public.decorator';
 
 @ApiTags('Onboarding')
 @Controller('onboarding')
@@ -31,7 +32,7 @@ export class OnboardingController {
   ) {
     return this.onboardingService.create(dto, file);
   }
-
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all onboarding screens' })
   findAll() {

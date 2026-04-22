@@ -7,6 +7,7 @@ import {
   Index,
 } from 'typeorm';
 import { ActivityLevel, Gender, Goal } from 'src/common/enums/user.enum';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User {
@@ -24,6 +25,7 @@ export class User {
   lastName!: string;
 
   @Column({ select: false }) // Don't include password in default queries
+  @Exclude()
   password!: string;
 
   @Column({ type: 'enum', enum: Gender })
