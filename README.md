@@ -49,7 +49,7 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/elevate-backend-c2/super-fitness-api-team-c.git
 cd super-fitness-api-team-c
 ```
 ### 2. Install dependencies
@@ -73,6 +73,7 @@ cp .env.example .env
 Edit the .env file and update the following variables:
 
 env
+```text
 # App
 APP_NAME=super-fitness-api
 NODE_ENV=development
@@ -98,6 +99,7 @@ API_VERSION=v1
 
 # Cors
 CORS_ORIGIN=*  # change this in production
+```
 
 ## 🗄 Database Setup
  Setup Using Docker (Recommended)
@@ -149,6 +151,44 @@ Once the application is running, you can access the Swagger documentation:
 
 - Swagger JSON: http://localhost:3000/api-docs
 
+## Authentication Service
+
+ * JWT Auth Guard with @Public() decorator support
+ * This guard checks if a route is marked with @Public()
+ * All routes are private by default 
+ * Use this to mark routes that should bypass authentication
+
+   
+   ### Usage:-
+ ```typescript
+  @Public()
+  @Post('register')
+  @ApiOperation({ summary: 'Register a new user' })
+  @ApiResponse({
+    status: 201,
+    description: 'User registered successfully',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({ status: 409, description: 'Username already exists' })
+  async register(@Body() registerDto: RegisterDto): Promise<AuthResponseDto> {
+    return this.authService.register(registerDto);
+  }
+  ```
+- Current Decorator:-
+ * @CurrentUser()
+ * Extracts the authenticated user from the request
+ * 
+      ### Usage:-
+ ```typescript
+  @Get('profile')
+  @ApiOperation({ summary: 'Get current user profile' })
+  @ApiResponse({ status: 200, description: 'User profile retrieved' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  getProfile(@CurrentUser() user: AuthenticatedUser) {
+    return user;
+  }
+  ```
+
 
 📁 Project Structure
 text
@@ -199,10 +239,10 @@ Create an issue
 
 Contact the development team
 
-## 🚀 Quick Start (TL;DR)
+## 🚀 Quick Start
 ```bash
 # 1. Clone and install
-git clone <repository-url>
+git clone https://github.com/elevate-backend-c2/super-fitness-api-team-c.git
 cd super-fitness-api-team-c
 npm install
 
