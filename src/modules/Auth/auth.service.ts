@@ -1,17 +1,18 @@
 import {
-  Injectable,
   ConflictException,
+  Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from '../user/repositories/user.repository';
 import {
-  RegisterDto,
   AuthResponseDto,
   LoginDto,
   loginResponseDto,
+  RegisterDto,
 } from './dtos/auth.dto';
+import { CompleteRegisterDto } from './dtos/complete-register.dto';
 import { JwtPayload } from './strategies/jwt.strategy';
 
 @Injectable()
@@ -111,6 +112,15 @@ export class AuthService {
     return {
       accessToken,
     };
+  }
+
+  async completeProfile(userId: string, dto: CompleteRegisterDto) {
+    const user = await this.userRepository.findById(userId);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    return await this.userRepository.update(userId, dto);
   }
 
   // private async comparePasswords(
