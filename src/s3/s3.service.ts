@@ -2,6 +2,13 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+// Define a minimal interface for the file
+interface MulterFile {
+  originalname: string;
+  buffer: Buffer;
+  mimetype: string;
+}
+
 @Injectable()
 export class S3Service {
   private s3Client: S3Client;
@@ -17,7 +24,7 @@ export class S3Service {
       forcePathStyle: true,
     });
   }
-  async uploadFile(file: Express.Multer.File): Promise<string> {
+  async uploadFile(file: MulterFile): Promise<string> {
     const fileName = `onboarding/${Date.now()}-${file.originalname}`;
 
     await this.s3Client.send(
