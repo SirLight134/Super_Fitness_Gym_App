@@ -8,11 +8,16 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserModule } from '../user/user.module';
 import type { IJwtConfig } from '../../config/jwt.config';
+import { MailModule } from 'src/common/mail/mail.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Otp } from './entities/otp.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Otp]),
     UserModule,
     PassportModule,
+    MailModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

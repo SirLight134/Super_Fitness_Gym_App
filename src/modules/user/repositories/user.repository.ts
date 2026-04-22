@@ -48,6 +48,13 @@ export class UserRepository {
   }
 
   /**
+   * Find a user by ID
+   */
+  async findByEmail(email: string): Promise<User | null> {
+    return this.repository.findOne({ where: { email } });
+  }
+
+  /**
    * Update a user
    */
   async update(id: string, userData: Partial<User>): Promise<User | null> {

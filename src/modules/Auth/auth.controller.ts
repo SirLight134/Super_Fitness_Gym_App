@@ -19,6 +19,11 @@ import {
   CurrentUser,
 } from './decorators/current-user.decorator';
 import { Public } from './decorators/public.decorator';
+import {
+  ForgotPasswordDto,
+  ResetPasswordDto,
+  VerifyOtpDto,
+} from './dtos/forget-password.dto';
 
 @ApiTags('Authentication')
 @ApiBearerAuth('JWT-auth')
@@ -46,5 +51,23 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   getProfile(@CurrentUser() user: AuthenticatedUser) {
     return user;
+  }
+
+  @Public()
+  @Post('forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(forgotPasswordDto);
+  }
+
+  @Public()
+  @Post('verify-otp')
+  async verifyOtp(@Body() verifyOtpDto: VerifyOtpDto) {
+    return this.authService.verifyOtp(verifyOtpDto);
+  }
+
+  @Public()
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.authService.resetPassword(resetPasswordDto);
   }
 }
