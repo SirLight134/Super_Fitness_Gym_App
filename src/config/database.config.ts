@@ -25,7 +25,7 @@ class DatabaseConfig extends CommonConfig {
       username: this.getEnvString('DATABASE_USERNAME'),
       password: this.getEnvString('DATABASE_PASSWORD'),
       database: this.getEnvString('DATABASE_NAME', 'progress_app'),
-      synchronize: false,
+      synchronize: this.getEnvBoolean('DATABASE_SYNCHRONIZE', true),
       logging: this.isDevelopment() && !this.isTest(),
       isProduction: this.isProduction(),
       environment: this.getEnvString('NODE_ENV', 'development'),
