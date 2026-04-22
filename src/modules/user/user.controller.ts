@@ -98,6 +98,7 @@ export class UserController {
     return this.userService.update(id, updateUserDto);
   }
 
+  @Public()
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Soft delete a user (deactivate)' })
