@@ -54,6 +54,19 @@ export class RegisterDto {
   phoneNumber?: string;
 }
 
+export class LoginDto {
+  @ApiProperty({ example: 'ahmed@domain.com' })
+  @IsNotEmpty()
+  @IsEmail()
+  email!: string;
+
+  @ApiProperty({ example: 'StrongPassword123!' })
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(6)
+  password!: string;
+}
+
 export class AuthResponseDto {
   @ApiProperty()
   accessToken!: string;

@@ -3,11 +3,12 @@ import {
   ConflictException,
   BadRequestException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from '../user/repositories/user.repository';
-import { RegisterDto, AuthResponseDto } from './dtos/auth.dto';
+import { RegisterDto, AuthResponseDto, LoginDto } from './dtos/auth.dto';
 import { JwtPayload } from './strategies/jwt.strategy';
 import {
   ForgotPasswordDto,
@@ -49,6 +50,43 @@ export class AuthService {
       ...registerDto,
       password: hashedPassword,
     });
+
+    // Generate JWT token
+    const accessToken = this.generateToken(user.id, user.email);
+
+    return {
+      accessToken,
+      user,
+    };
+  }
+
+  /**
+   * Login user
+   */
+  async login(loginDto: LoginDto): Promise<AuthResponseDto> {
+    // Find user with password
+    const user = await this.userRepository.findByEmail(loginDto.email);
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // Check if user is active
+    if (!user.isActive) {
+      throw new UnauthorizedException(
+        'Account is deactivated. Contact support.',
+      );
+    }
+
+    // Verify password
+    const isPasswordValid = await this.comparePasswords(
+      loginDto.password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
 
     // Generate JWT token
     const accessToken = this.generateToken(user.id, user.email);
@@ -193,5 +231,12 @@ export class AuthService {
   private async hashPassword(password: string): Promise<string> {
     const saltRounds = 10;
     return bcrypt.hash(password, saltRounds);
+  }
+
+  private async comparePasswords(
+    plainPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
+    return bcrypt.compare(plainPassword, hashedPassword);
   }
 }

@@ -13,7 +13,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { RegisterDto, AuthResponseDto } from './dtos/auth.dto';
+import { RegisterDto, AuthResponseDto, LoginDto } from './dtos/auth.dto';
 import {
   type AuthenticatedUser,
   CurrentUser,
@@ -43,6 +43,19 @@ export class AuthController {
   @ApiResponse({ status: 409, description: 'Username already exists' })
   async register(@Body() registerDto: RegisterDto): Promise<AuthResponseDto> {
     return this.authService.register(registerDto);
+  }
+
+  @Public()
+  @Post('login')
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({
+    status: 200,
+    description: 'User logged in successfully',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
+    return this.authService.login(loginDto);
   }
 
   @Get('profile')
