@@ -17,6 +17,7 @@ import { UserModule } from './modules/user/user.module';
 import jwtConfig from './config/jwt.config';
 import { AuthModule } from './modules/Auth/auth.module';
 import { JwtAuthGuard } from './modules/Auth/guards/jwt-auth.guard';
+import { ExerciseModule } from './modules/exercise/exercise.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { JwtAuthGuard } from './modules/Auth/guards/jwt-auth.guard';
     UserModule,
     AuthModule,
     OnboardingModule,
+    ExerciseModule,
   ],
   controllers: [AppController],
   providers: [
