@@ -70,6 +70,7 @@ export class UserController {
   async getStats() {
     return this.userService.getStats();
   }
+
   @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get a user by ID' })
