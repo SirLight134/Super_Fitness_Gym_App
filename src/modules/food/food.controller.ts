@@ -3,51 +3,108 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
+  ParseUUIDPipe,
+  Patch,
   Post,
-  Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { FoodService } from './food.service';
-import { Public } from '../Auth/decorators/public.decorator';
-import { CreateFoodDto } from './dto/create-food.dto';
-import { UpdateFoodDto } from './dto/update-food.dto';
-import { RecommendationQueryDto } from './dto/recommendation-query.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  ApiConsumes,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
-@Public()
-@Controller('food')
-export class FoodController {
-  constructor(private readonly foodService: FoodService) {}
+import { MealService } from './food.service';
+import { Public } from '../Auth/decorators/public.decorator';
+import {
+  CreateMealDto,
+  MealResponseDto,
+  UpdateMealDto,
+} from './dto/createMeal.dto';
+
+@ApiTags('Meals')
+@Controller('meals')
+export class MealController {
+  constructor(private readonly mealService: MealService) {}
 
   @Post()
-  async createFood(@Body() body: CreateFoodDto) {
-    const { name, calories, mealType } = body;
-    return this.foodService.createFood(name, calories, mealType);
+  @ApiOperation({ summary: 'Create a new Meal ' })
+  @ApiConsumes('multipart/form-data')
+  @ApiResponse({
+    status: 201,
+    description: 'Meal created successfully',
+    type: MealResponseDto,
+  })
+  @UseInterceptors(FileInterceptor('video'))
+  async create(
+    @Body() dto: CreateMealDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.mealService.create(dto, file);
   }
 
+  @Public()
   @Get()
-  async findAll() {
-    return this.foodService.findAll();
+  @ApiOperation({ summary: 'Get all Meal with pagination' })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Meals retrieved successfully',
+  })
+  async findAll(@Query('page') page?: number, @Query('limit') limit?: number) {
+    return this.mealService.findAll({
+      page: page ? Number(page) : undefined,
+      limit: limit ? Number(limit) : undefined,
+    });
   }
 
+  @Public()
   @Get(':id')
-  async findById(@Param('id') id: number) {
-    return this.foodService.findById(id);
+  @ApiOperation({ summary: 'Get a single meal by ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Meal found',
+    type: MealResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Meal not found' })
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.mealService.findOne(id);
   }
 
-  @Put(':id')
-  async updateFood(@Param('id') id: number, @Body() body: UpdateFoodDto) {
-    const { name, calories, mealType } = body;
-    return this.foodService.updateFood(id, name, calories, mealType);
-  }
-
-  @Get('recommendations')
-  async findByMealType(@Query() query: RecommendationQueryDto) {
-    return this.foodService.findByMealType(query.mealType);
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update meal' })
+  @ApiResponse({
+    status: 200,
+    description: 'Meal updated successfully',
+    type: MealResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Meal not found' })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('video'))
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateMealDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.mealService.update(id, dto, file);
   }
 
   @Delete(':id')
-  async deleteFood(@Param('id') id: number) {
-    return this.foodService.deleteFood(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Permanently delete a Meal' })
+  @ApiResponse({ status: 204, description: 'Meal deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Meal not found' })
+  @ApiOperation({ summary: 'Delete a meal' })
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.mealService.delete(id);
   }
 }

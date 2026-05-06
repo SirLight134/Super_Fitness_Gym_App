@@ -17,7 +17,8 @@ import { UserModule } from './modules/user/user.module';
 import jwtConfig from './config/jwt.config';
 import { AuthModule } from './modules/Auth/auth.module';
 import { JwtAuthGuard } from './modules/Auth/guards/jwt-auth.guard';
-import { FoodModule } from './modules/food/food.module';
+import { ExerciseModule } from './modules/exercise/exercise.module';
+import { MealModule } from './modules/food/food.module';
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { FoodModule } from './modules/food/food.module';
     UserModule,
     AuthModule,
     OnboardingModule,
-    FoodModule,
+    ExerciseModule,
+    MealModule,
   ],
   controllers: [AppController],
   providers: [

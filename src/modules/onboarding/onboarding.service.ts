@@ -17,7 +17,7 @@ export class OnboardingService {
   async create(dto: CreateOnboardingDto, file: Express.Multer.File) {
     if (!file) throw new Error('Image is required');
 
-    const imageUrl = await this.s3Service.uploadFile(file);
+    const imageUrl = await this.s3Service.uploadImage(file);
 
     const screen = this.repo.create({ ...dto, image: imageUrl });
 
@@ -44,7 +44,7 @@ export class OnboardingService {
     Object.assign(screen, dto);
 
     if (file) {
-      screen.image = await this.s3Service.uploadFile(file);
+      screen.image = await this.s3Service.uploadImage(file);
     }
 
     return await this.repo.save(screen);
