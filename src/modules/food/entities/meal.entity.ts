@@ -30,7 +30,7 @@ export class Meal {
   @Column()
   video!: string;
 
-  @Column()
+  @Column('jsonb')
   ingredients!: Ingredient[];
 
   @CreateDateColumn()
