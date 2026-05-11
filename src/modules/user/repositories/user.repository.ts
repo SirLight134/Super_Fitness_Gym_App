@@ -48,10 +48,13 @@ export class UserRepository {
   }
 
   /**
-   * Find a user by ID
+   * Find a user by email
    */
   async findByEmail(email: string): Promise<User | null> {
-    return this.repository.findOne({ where: { email } });
+    return this.repository.findOne({
+      where: { email },
+      select: ['id', 'email', 'password', 'isActive', 'createdAt', 'updatedAt'], // include password for auth purposes
+    });
   }
 
   /**

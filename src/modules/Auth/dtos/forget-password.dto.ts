@@ -40,15 +40,15 @@ export class ResetPasswordDto {
   email!: string;
 
   @ApiProperty({
-    example: '123456',
-    description: 'OTP code',
+    example: 'currentPassword123!',
+    description: 'Current user password',
   })
   @IsString()
   @IsNotEmpty()
-  otp!: string;
+  currentPassword!: string;
 
   @ApiProperty({
-    example: 'StrongPassword123!',
+    example: 'NewPassword123!',
     description: 'New user password',
   })
   @IsNotEmpty()
@@ -57,7 +57,7 @@ export class ResetPasswordDto {
   newPassword!: string;
 
   @ApiProperty({
-    example: 'StrongPassword123!',
+    example: 'NewPassword123!',
     description: 'Confirm new password (must match the newPassword field)',
   })
   @IsNotEmpty()

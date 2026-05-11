@@ -135,7 +135,7 @@ export class AuthService {
       throw new BadRequestException('Account is deactivated. Contact support.');
     }
 
-    // Generate OTP (reusing your existing generateOtp method)
+    // Generate OTP
     return this.generateOtp(email);
   }
 
@@ -203,6 +203,29 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
+    // 1- compare current password
+    const isPasswordValid = await this.comparePasswords(
+      resetPasswordDto.currentPassword,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new BadRequestException('Current password is incorrect');
+    }
+
+    // 2- check if the new password is the same as the current password
+    const isSamePassword = await this.comparePasswords(
+      resetPasswordDto.newPassword,
+      user.password,
+    );
+
+    if (isSamePassword) {
+      throw new BadRequestException(
+        'New password cannot be the same as the current password',
+      );
+    }
+
+    // 3- Hash new password
     const hashedPassword = await this.hashPassword(
       resetPasswordDto.newPassword,
     );
@@ -237,6 +260,9 @@ export class AuthService {
     plainPassword: string,
     hashedPassword: string,
   ): Promise<boolean> {
+    if (!plainPassword || !hashedPassword) {
+      throw new BadRequestException('Invalid passwords data');
+    }
     return bcrypt.compare(plainPassword, hashedPassword);
   }
 }
