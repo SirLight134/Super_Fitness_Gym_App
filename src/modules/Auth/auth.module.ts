@@ -11,7 +11,6 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { Otp } from './entities/otp.entity';
 import { JwtStrategy } from './strategies/jwt.strategy';
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([Otp]),

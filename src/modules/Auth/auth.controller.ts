@@ -24,6 +24,10 @@ import {
   ResetPasswordDto,
   VerifyOtpDto,
 } from './dtos/forget-password.dto';
+import {
+  InitiateEmailChangeDto,
+  VerifyEmailChangeDto,
+} from './dtos/update-email.dto';
 
 @ApiTags('Authentication')
 @ApiBearerAuth('JWT-auth')
@@ -82,5 +86,28 @@ export class AuthController {
   @Post('reset-password')
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     return this.authService.resetPassword(resetPasswordDto);
+  }
+
+  @Post('initiate-email-change')
+  async initiateEmailChange(
+    @Body() initiateEmailChangeDto: InitiateEmailChangeDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.authService.initiateEmailChange(
+      user.id,
+      initiateEmailChangeDto.newEmail,
+    );
+  }
+
+  @Post('verify-email-change')
+  async verifyEmailChange(
+    @Body() verifyEmailChangeDto: VerifyEmailChangeDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.authService.verifyEmailChange(
+      user.id,
+      verifyEmailChangeDto.newEmail,
+      verifyEmailChangeDto.otp,
+    );
   }
 }
