@@ -35,10 +35,10 @@ export class User {
   phoneNumber?: string;
 
   // Complete register fields
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'float', nullable: true })
   weight?: number;
 
-  @Column({ nullable: true, type: 'int' })
+  @Column({ nullable: true, type: 'float' })
   height?: number;
 
   @Column({ type: 'enum', enum: Goal, nullable: true })
@@ -63,6 +63,9 @@ export class User {
 
   @Column({ nullable: true })
   lastLoginAt?: Date;
+
+  @Column({ nullable: true, length: 255 })
+  profilePictureUrl?: string;
 
   @CreateDateColumn()
   createdAt!: Date;

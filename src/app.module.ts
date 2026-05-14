@@ -19,6 +19,7 @@ import { AuthModule } from './modules/Auth/auth.module';
 import { JwtAuthGuard } from './modules/Auth/guards/jwt-auth.guard';
 import { ExerciseModule } from './modules/exercise/exercise.module';
 import { MealModule } from './modules/food/food.module';
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { MealModule } from './modules/food/food.module';
     OnboardingModule,
     ExerciseModule,
     MealModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [

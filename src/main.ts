@@ -52,4 +52,4 @@ async function bootstrap() {
   console.log(`🚀 Super Fitness API is running on: ${await app.getUrl()}`);
   console.log(`📝 API Documentation: ${await app.getUrl()}/api-docs`);
 }
-bootstrap();
+void bootstrap();

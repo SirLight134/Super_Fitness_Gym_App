@@ -5,9 +5,7 @@
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
     "ignoreDeprecations": "6.0",
     "target": "ES2021",
@@ -27,19 +25,8 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "types": [
-      "node",
-      "jest",
-      "multer"
-    ]
+    "types": ["node", "jest", "multer"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "test",
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
