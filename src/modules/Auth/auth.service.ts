@@ -155,7 +155,7 @@ export class AuthService {
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
     const otp = this.otpRepository.create({
       email,
@@ -238,6 +238,47 @@ export class AuthService {
       message:
         'Password reset successfully. Please login with your new password.',
     };
+  }
+
+  // initiate email change service
+  async initiateEmailChange(
+    userId: string,
+    newEmail: string,
+  ): Promise<{ message: string }> {
+    const currentUser = await this.userRepository.findById(userId);
+
+    if (!currentUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (currentUser.email === newEmail) {
+      throw new BadRequestException(
+        'New email cannot be the same as the current email',
+      );
+    }
+
+    const emailExists = await this.userRepository.emailExists(newEmail);
+    if (emailExists) {
+      throw new BadRequestException('Email already exists');
+    }
+
+    // Generate and send OTP to the new email
+    return this.generateOtp(newEmail);
+  }
+
+  // verify email change service
+  async verifyEmailChange(
+    userId: string,
+    newEmail: string,
+    otp: string,
+  ): Promise<{ message: string }> {
+    // Verify OTP for the new email
+    await this.verifyOtp({ email: newEmail, otp });
+
+    // Update user email
+    await this.userRepository.update(userId, { email: newEmail });
+
+    return { message: 'Email changed successfully' };
   }
 
   // ─── Private Helper Methods ──────────────────────────────────────────────
