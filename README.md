@@ -52,7 +52,9 @@ Before you begin, ensure you have the following installed:
 git clone https://github.com/elevate-backend-c2/super-fitness-api-team-c.git
 cd super-fitness-api-team-c
 ```
+
 ### 2. Install dependencies
+
 ```bash
 npm install
 # or
@@ -62,7 +64,9 @@ pnpm install
 ```
 
 ## 🔧 Environment Setup
+
 ### 1. Create environment file
+
 Copy the example environment file:
 
 ```bash
@@ -70,9 +74,11 @@ cp .env.example .env
 ```
 
 ### 2. Configure environment variables
+
 Edit the .env file and update the following variables:
 
 env
+
 ```text
 # App
 APP_NAME=super-fitness-api
@@ -102,8 +108,9 @@ CORS_ORIGIN=*  # change this in production
 ```
 
 ## 🗄 Database Setup
- Setup Using Docker (Recommended)
- Start PostgreSQL container:
+
+Setup Using Docker (Recommended)
+Start PostgreSQL container:
 
 ```bash
 # Start the database container
@@ -117,6 +124,7 @@ npm run docker:down
 ```
 
 ### Run Database Migrations
+
 ```bash
 # Generate a new migration (after creating entities)
 npm run migration:generate -- src/database/migrations/migration_name
@@ -129,11 +137,15 @@ npm run migration:revert
 ```
 
 ## 🏃 Running the Application
+
 Development Mode (with hot reload)
+
 ```bash
 npm run start:dev
 ```
+
 Production Mode
+
 ```bash
 # Build the application
 npm run build
@@ -145,6 +157,7 @@ npm run start:prod
 ### The application will be available at: http://localhost:3000
 
 ## 📚 API Documentation
+
 Once the application is running, you can access the Swagger documentation:
 
 - Swagger UI: http://localhost:3000/api
@@ -153,70 +166,70 @@ Once the application is running, you can access the Swagger documentation:
 
 ## Authentication Service
 
- * JWT Auth Guard with @Public() decorator support
- * This guard checks if a route is marked with @Public()
- * All routes are private by default 
- * Use this to mark routes that should bypass authentication
+- JWT Auth Guard with @Public() decorator support
+- This guard checks if a route is marked with @Public()
+- All routes are private by default
+- Use this to mark routes that should bypass authentication
 
-   
-   ### Usage:-
- ```typescript
-  @Public()
-  @Post('register')
-  @ApiOperation({ summary: 'Register a new user' })
-  @ApiResponse({
-    status: 201,
-    description: 'User registered successfully',
-    type: AuthResponseDto,
-  })
-  @ApiResponse({ status: 409, description: 'Username already exists' })
-  async register(@Body() registerDto: RegisterDto): Promise<AuthResponseDto> {
-    return this.authService.register(registerDto);
-  }
-  ```
+  ### Usage:-
+
+```typescript
+ @Public()
+ @Post('register')
+ @ApiOperation({ summary: 'Register a new user' })
+ @ApiResponse({
+   status: 201,
+   description: 'User registered successfully',
+   type: AuthResponseDto,
+ })
+ @ApiResponse({ status: 409, description: 'Username already exists' })
+ async register(@Body() registerDto: RegisterDto): Promise<AuthResponseDto> {
+   return this.authService.register(registerDto);
+ }
+```
+
 - Current Decorator:-
- * @CurrentUser()
- * Extracts the authenticated user from the request
- * 
-      ### Usage:-
- ```typescript
-  @Get('profile')
-  @ApiOperation({ summary: 'Get current user profile' })
-  @ApiResponse({ status: 200, description: 'User profile retrieved' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  getProfile(@CurrentUser() user: AuthenticatedUser) {
-    return user;
-  }
-  ```
 
+* @CurrentUser()
+* Extracts the authenticated user from the request
+* ### Usage:-
+
+```typescript
+ @Get('profile')
+ @ApiOperation({ summary: 'Get current user profile' })
+ @ApiResponse({ status: 200, description: 'User profile retrieved' })
+ @ApiResponse({ status: 401, description: 'Unauthorized' })
+ getProfile(@CurrentUser() user: AuthenticatedUser) {
+   return user;
+ }
+```
 
 📁 Project Structure
 text
 super-fitness-api-team-c/
 ├── src/
-│   ├── modules/           # Feature modules
-│   │   ├── users/        # User module
-│   │   ├── workouts/     # Workout module
-│   │   └── exercises/    # Exercise module
-│   ├── common/           # Shared utilities
-│   │   ├── decorators/   # Custom decorators
-│   │   ├── filters/      # Exception filters
-│   │   ├── guards/       # Authentication guards
-│   │   ├── interceptors/ # Request interceptors
-│   │   └── pipes/        # Validation pipes
-│   ├── config/           # Configuration files
-│   ├── database/         # Database entities and migrations
-│   ├── app.module.ts     # Root module
-│   └── main.ts           # Application entry point
-├── test/                 # Test files
-├── .env.example          # Example environment variables
-├── .gitignore           # Git ignore rules
-├── docker-compose.yml   # Docker configuration
-├── nest-cli.json        # NestJS CLI config
-├── package.json         # Dependencies
-├── tsconfig.json        # TypeScript config
-└── README.md            # Documentation
-
+│ ├── modules/ # Feature modules
+│ │ ├── users/ # User module
+│ │ ├── workouts/ # Workout module
+│ │ └── exercises/ # Exercise module
+│ ├── common/ # Shared utilities
+│ │ ├── decorators/ # Custom decorators
+│ │ ├── filters/ # Exception filters
+│ │ ├── guards/ # Authentication guards
+│ │ ├── interceptors/ # Request interceptors
+│ │ └── pipes/ # Validation pipes
+│ ├── config/ # Configuration files
+│ ├── database/ # Database entities and migrations
+│ ├── app.module.ts # Root module
+│ └── main.ts # Application entry point
+├── test/ # Test files
+├── .env.example # Example environment variables
+├── .gitignore # Git ignore rules
+├── docker-compose.yml # Docker configuration
+├── nest-cli.json # NestJS CLI config
+├── package.json # Dependencies
+├── tsconfig.json # TypeScript config
+└── README.md # Documentation
 
 🤝 Contributing
 Fork the repository
@@ -230,9 +243,11 @@ Push to the branch (git push origin feature/amazing-feature)
 Open a Pull Request
 
 ## 📄 License
+
 This project is MIT licensed.
 
 ## 📞 Support
+
 For issues, questions, or contributions:
 
 Create an issue
@@ -240,6 +255,7 @@ Create an issue
 Contact the development team
 
 ## 🚀 Quick Start
+
 ```bash
 # 1. Clone and install
 git clone https://github.com/elevate-backend-c2/super-fitness-api-team-c.git
@@ -261,4 +277,5 @@ npm run start:dev
 
 # 6. Visit http://localhost:3000/api for documentation
 ```
+
 ## Happy Coding! 💪
